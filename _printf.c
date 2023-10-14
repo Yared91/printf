@@ -9,9 +9,7 @@ int _printf(const char *format, ...)
 int chara_index = 0;
 va_list valist;
 if (format == NULL)
-{
 return (-1);
-}
 va_start(valist, format);
 while (*format)
 {
@@ -33,18 +31,16 @@ chara_index++;
 }
 else if (*format == 's')
 {
-char *str = va_arg(valist, char*)
-; int str_len = 0;
+char *str = va_arg(valist, char*);
+unsigned int str_len = strlen(str);
 while (str[str_len] != '\0')
 str_len++;
 write(1, str, str_len);
 chara_index += str_len;
 }
 else if (*format == '%')
-{
 write(1, format, 1);
 chara_index++;
-}
 format++;
 }
 }
