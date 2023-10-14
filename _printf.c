@@ -1,4 +1,7 @@
 #include "main.h"
+
+void print_buffer(char buffer[], int *buff_ind);
+
 /**
  * _printf - function that produces output
  * @format: string literal input
@@ -6,44 +9,59 @@
  */
 int _printf(const char *format, ...)
 {
-int chara_index = 0;
-va_list valist;
-if (format == NULL)
-return (-1);
-va_start(valist, format);
-while (*format)
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(list, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
+	{
+		if (format[i] != '%')
+		{
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
+		}
+		else
+		{
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
+		}
+	}
+
+	print_buffer(buffer, &buff_ind);
+
+	va_end(list);
+
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: char Array
+ * @buff_ind: shows index where the next char to be add
+ */
+void print_buffer(char buffer[], int *buff_ind)
 {
-if (*format != '%')
-{
-write(1, format, 1);
-chara_index++;
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
+
+	*buff_ind = 0;
 }
-else
-{
-format++;
-if (*format == '\0')
-break;
-if (*format == 'c')
-{
-char a = va_arg(valist, int);
-write(1, &a, 1);
-chara_index++;
-}
-else if (*format == 's')
-{
-char *str = va_arg(valist, char*);
-unsigned int len = strlen(str);
-if (len != '\0')
-	len++;
-write(1, str, len);
-chara_index += len;
-}
-else if (*format == '%')
-write(1, format, 1);
-chara_index++;
-format++;
-}
-}
-va_end(valist);
-return (chara_index);
-}
+
