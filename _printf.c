@@ -1,49 +1,68 @@
 #include "main.h"
+
+void print_buffer(char buffer[], int *buff);
+
 /**
  * _printf - function that produces output
  * @format: string literal input
- * Return: number of characters printed
+ * Return: number of characters
  */
+
 int _printf(const char *format, ...)
 {
-int chara_index = 0;
-va_list valist;
-if (format == NULL)
-return (-1);
-va_start(valist, format);
-while (*format)
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
+
+	if (format == NULL)
+		return (-1);
+
+	va_start(list, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
+	{
+		if (format[i] != '%')
+		{
+			buffer[buff++] = format[i];
+			if (buff == BUFF_SIZE)
+				print_buffer(buffer, &buff);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
+		}
+		else
+		{
+			print_buffer(buffer, &buff);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
+		}
+	}
+
+	print_buffer(buffer, &buff);
+
+	va_end(list);
+
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - displays contents of buffer
+ * @buffer: input array
+ * @buff: character that denotes the length
+ */
+void print_buffer(char buffer[], int *buff)
 {
-if (*format != '%')
-{
-write(1, format, 1);
-chara_index++;
+	if (*buff > 0)
+		write(1, &buffer[0], *buff);
+
+	*buff = 0;
 }
-else
-{
-format++;
-if (*format == '\0')
-break;
-if (*format == 'c')
-{
-char a = va_arg(valist, int);
-write(1, &a, 1);
-chara_index++;
-}
-else if (*format == 's')
-{
-char *str = va_arg(valist, char*);
-unsigned int str_len = strlen(str);
-while (str[str_len] != '\0')
-str_len++;
-write(1, str, str_len);
-chara_index += str_len;
-}
-else if (*format == '%')
-write(1, format, 1);
-chara_index++;
-format++;
-}
-}
-va_end(valist);
-return (chara_index);
-}
+
