@@ -1,4 +1,3 @@
-
 #include "main.h"
 
 /**
@@ -77,7 +76,7 @@ int print_octal(va_list types, char buffer[],
 }
 
 /**
-* print_hexadecimal - output an unsigned number in hexadecimal
+ * print_hexadecimal - output an unsigned number in hexadecimal
  * @types: An arguments of list
  * @buffer: Buffer of  array to print
  * @flags: Controls alignment of active flags
@@ -154,4 +153,3 @@ int print_hexa(va_list types, char map_to[], char buffer[],
 
 	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
 }
-

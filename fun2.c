@@ -51,7 +51,7 @@ int print_pointer(va_list types, char buffer[],
 }
 
 /**
-  * print_non_printable - Output ascii codes in hexa
+ * print_non_printable - Output ascii codes in hexa
  * @types: An arguments of list
  * @buffer: Buffer of  array to print
  * @flags: Controls alignment of active flags
@@ -182,4 +182,3 @@ int print_rot13string(va_list types, char buffer[],
 	}
 	return (count);
 }
-
