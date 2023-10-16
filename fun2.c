@@ -75,10 +75,7 @@ int print_non_printable(va_list types, char buffer[],
 	UNUSED(size);
 
 	if (str == NULL)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+		(write(1, "(null)", 6));
 
 	while (str[i] != '\0')
 	{
