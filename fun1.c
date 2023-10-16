@@ -119,7 +119,6 @@ int print_hexa_upper(va_list types, char buffer[],
  * @width: Specify minimum width
  * @precision: Controls decimal number for floating
  * @size: Give size
- * @size: Specification of size
  * Return: Number of chars to be printed
  */
 int print_hexa(va_list types, char map_to[], char buffer[],
