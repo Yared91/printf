@@ -1,21 +1,20 @@
 #include "main.h"
 
 /**
- * print_pointer - outputs value of a pointer
- * @types:  An arguments of list
+ * print_pointer - Prints the value of a pointer variable
+ * @types: An arguments of list
  * @buffer: Buffer of  array to print
  * @flags: Controls alignment of active flags
  * @width: Specify minimum width
  * @precision: Controls decimal number for floating
  * @size: Give size
- * Return: Number of chars to be printed
+ * Return: Number of chars to be  printed.
  */
-
 int print_pointer(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	char extra_c = 0, padd = ' ';
-	int ind = BUFF_SIZE - 2, length = 2, padd_start = 1;
+	int ind = BUFF_SIZE - 2, length = 2, padd_start = 1; /* length=2, for '0x' */
 	unsigned long num_addrs;
 	char map_to[] = "0123456789abcdef";
 	void *addrs = va_arg(types, void *);
@@ -51,9 +50,8 @@ int print_pointer(va_list types, char buffer[],
 		width, flags, padd, extra_c, padd_start));
 }
 
-
 /**
- * print_non_printable - Output ascii codes in hexa
+ * print_non_printable - Prints ascii codes in hexa of non printable chars
  * @types: An arguments of list
  * @buffer: Buffer of  array to print
  * @flags: Controls alignment of active flags
@@ -62,7 +60,6 @@ int print_pointer(va_list types, char buffer[],
  * @size: Give size
  * Return: Number of chars to be printed
  */
-
 int print_non_printable(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
@@ -75,7 +72,7 @@ int print_non_printable(va_list types, char buffer[],
 	UNUSED(size);
 
 	if (str == NULL)
-		(write(1, "(null)", 6));
+		return (write(1, "(null)", 6));
 
 	while (str[i] != '\0')
 	{
@@ -92,16 +89,15 @@ int print_non_printable(va_list types, char buffer[],
 	return (write(1, buffer, i + offset));
 }
 
-
 /**
- * print_reverse - Output reverse string.
- * @types: An arguments of list
- * @buffer: Buffer of array to print
- * @flags: Controls alignment of active flags
+ * print_reverse - Prints reverse string.
+ * @types: Arguments list
+ * @buffer: Buffer of  array to be  print
+ * @flags:  Control aligments of active flags
  * @width: Specify minimum width
  * @precision: Controls decimal number for floating
- * @size: Give size
- * Return: Numbers of chars printer
+ * @size: give Size
+ * Return: Numbers of chars to be  printed
  */
 
 int print_reverse(va_list types, char buffer[],
@@ -136,16 +132,15 @@ int print_reverse(va_list types, char buffer[],
 	return (count);
 }
 
-
 /**
- * print_rot13string - output a string in rot13.
- * @types: An arguments of list
+ * print_rot13string - Print a string in rot13.
+ * @types: Arguments of list
  * @buffer: Buffer of  array to print
- * @flags: Controls alignment of active flags
+ * @flags: Controls aligments of active flags
  * @width: Specify minimum width
- * @precision: Controls decimal number for floating
+ * @precision: Controls decimal numbers for floating
  * @size: Give size
- * Return: Numbers of chars printed
+ * Return: Number of charaters to be printed
  */
 int print_rot13string(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
@@ -187,3 +182,4 @@ int print_rot13string(va_list types, char buffer[],
 	}
 	return (count);
 }
+
